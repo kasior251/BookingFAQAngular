@@ -22,6 +22,46 @@ namespace BookingFAQAngular
                                       }).ToList();
             return allQuestions;
         }
+
+        public List<question> getQuestionsByCathegory(int id)
+        {
+            Cathegory cat = db.Cathegories.Find(id);
+
+            List<Question> questions = (from q in db.Questions
+                                        where q.cathegory.id == id
+                                        select q).ToList();
+            List<question> list = new List<question>();
+            foreach (Question q in questions)
+            {
+                question q1 = new question()
+                {
+                    id = q.id,
+                    questionText = q.questionText,
+                    answerText = q.answerText,
+                    cathegory = cat.name
+                };
+                list.Add(q1);
+            }
+            /*List<question> questions = getAllQuestions();
+            for (int i = 0; i < questions.Count; i++)
+            {
+                if (questions[i].cathegory.Equals(cathegory.name))
+                {
+                    continue;
+                }
+                questions.RemoveAt(i+1);
+            }*/
+            return list;
+        }
+
+
+        public List<Cathegory> getAllCathegories()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            List<Cathegory> allCathegories = db.Cathegories.Select(row => row).ToList();
+            int i = allCathegories.Count();
+            return allCathegories;
+        }
         
         /*
         public kunde hentEnKunde(int id)

@@ -1,0 +1,21 @@
+﻿<div>
+    <h1>Frequently Asked Questions</h1>
+    <button (click)='getAllCathegories()'>Get Cathegories</button>
+    <button (click)='getAllCathegories()'>Contact Info</button>
+    <button (click)='getAllCathegories()'>Back</button>
+    {{laster}}
+        <div id="{{cathegory.id}}" *ngFor='let cathegory of allCathegories'>
+            <button class="cathegoryBtn"  (click)='getQuestions(cathegory.id)'>
+                {{cathegory.id}} : {{cathegory.name}}
+            </button>
+            {{cathegory.id}}
+        </div>
+        <div id="questions">
+            <ul>
+                <li *ngFor='let question of questions'>
+                    {{question.questionText}}
+                    {{question.answerText}}
+                </li>
+            </ul>
+        </div>
+</div>

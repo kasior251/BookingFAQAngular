@@ -26,7 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>2.3</TypeScriptToolsVersion>
-    <Use64BitIISExpress />
+    <Use64BitIISExpress>false</Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -92,16 +92,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\ShowQuestions.html" />
+    <Content Include="app\ShowCathegories.html" />
     <Content Include="App_Data\FAQDatabase.mdf" />
-    <Content Include="App_Data\FAQDatabase_log.ldf" />
+    <Content Include="App_Data\FAQDatabase_log.ldf">
+      <DependentUpon>FAQDatabase.mdf</DependentUpon>
+    </Content>
+    <Content Include="Content\style.css" />
     <Content Include="Global.asax" />
+    <Content Include="background.jpg" />
     <Content Include="index.html" />
     <Content Include="systemjs.config.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CathegoryController.cs" />
     <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -123,12 +128,15 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Images\" />
+  </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\app.module.ts" />
+    <TypeScriptCompile Include="app\Cathegory.ts" />
     <TypeScriptCompile Include="app\Question.ts" />
     <TypeScriptCompile Include="app\main.ts" />
-    <TypeScriptCompile Include="app\showAllQuestions.ts" />
+    <TypeScriptCompile Include="app\showAllCathegories.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -149,7 +157,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>5009</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:5009/</IISUrl>
+          <IISUrl>http://localhost:5121/</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost:5121/</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

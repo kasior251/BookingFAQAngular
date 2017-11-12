@@ -18,9 +18,9 @@ namespace BookingFAQAngular
         QuestionDB questionDb = new QuestionDB();
 
         // GET api/Question
-        public HttpResponseMessage Get()
+        public HttpResponseMessage Get(int id)
         {
-            List<question> allQuestions = questionDb.getAllQuestions();
+            List<question> allQuestions = questionDb.getQuestionsByCathegory(id);
             
             var Json = new JavaScriptSerializer();
             string JsonString = Json.Serialize(allQuestions);
