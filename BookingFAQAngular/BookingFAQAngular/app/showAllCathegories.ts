@@ -19,8 +19,13 @@ export class ShowAllCathegories {
     public scheme: FormGroup;
     public questionSubmitted: boolean;
     public hideNewQuestionButton: boolean;
+    public newQuestions: Array<Question>;
+    public adminMode: boolean;
+    public contact: boolean;
 
     constructor(private _http: Http, private fb: FormBuilder) {
+        this.contact = false;
+        this.adminMode = false;
         this.showForm = false;
         this.questionSubmitted = false;
         this.hideNewQuestionButton = true;
@@ -32,6 +37,8 @@ export class ShowAllCathegories {
     }
 
     getAllCathegories() {
+        this.contact = false;
+        this.adminMode = false;
         this.questionSubmitted = false;
         this.showForm = false;
         this.laster = "Vennligst vent";
@@ -61,6 +68,8 @@ export class ShowAllCathegories {
     }
 
     getQuestions(id: number) {
+        this.contact = false;
+        this.adminMode = false;
         this.questionSubmitted = false;
         this.showForm = false;
         this.laster = "Vennligst vent";
@@ -85,6 +94,8 @@ export class ShowAllCathegories {
     }
 
     getAnswer(id: number, text: string) {
+        this.contact = false;
+        this.adminMode = false;
         this.hideNewQuestionButton = false;
         this.questionSubmitted = false;
         var divId = "answer" + id;
@@ -97,6 +108,8 @@ export class ShowAllCathegories {
     }
 
     showNewQuestionForm() {
+        this.contact = false;
+        this.adminMode = false;
         this.questionSubmitted = false;
         this.showForm = true;
         this.hideNewQuestionButton = true;
@@ -137,6 +150,45 @@ export class ShowAllCathegories {
             newQuestion: "",
             email: ""
         });
+    }
+
+    showSentQuestions() {
+        this.contact = false;
+        this.questionSubmitted = false;
+        this.showForm = false;
+        this.hideNewQuestionButton = true;
+        this.adminMode = true;
+        this._http.get("api/question/")
+            .map(resultat => {
+                let JsonData = resultat.json();
+                return JsonData;
+            })
+            .subscribe(
+            JsonData => {
+                this.newQuestions = [];
+                this.laster = "";
+                if (JsonData) {
+                    for (let q of JsonData) {
+                        this.newQuestions.push(q);
+                    };
+                };
+            },
+            error => alert(error),
+            () => console.log("ferdig get-api/question")
+            );
+
+    }
+
+    contactInfo() {
+        this.questionSubmitted = false;
+        this.showForm = false;
+        this.hideNewQuestionButton = true;
+        this.adminMode = false;
+        this.contact = true;
+    }
+
+    backToMain() {
+        window.location.href = "http://bookingsystem2017xxx.azurewebsites.net/";
     }
 
 }

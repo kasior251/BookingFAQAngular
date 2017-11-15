@@ -23,6 +23,27 @@ namespace BookingFAQAngular
             return allQuestions;
         }
 
+        public List<question> getUnansweredQuestions()
+        {
+            List<Question> questions = (from q in db.Questions
+                                        where q.answerText == null
+                                        select q).ToList();
+            List<question> list = new List<question>();
+            foreach (Question q in questions)
+            {
+                question q1 = new question()
+                {
+                    id = q.id,
+                    questionText = q.questionText,
+                    answerText = q.answerText,
+                    cathegory = q.cathegory.name
+                };
+                list.Add(q1);
+            }
+            return list;
+
+        }
+
         public List<question> getQuestionsByCathegory(int id)
         {
             Cathegory cat = db.Cathegories.Find(id);

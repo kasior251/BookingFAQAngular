@@ -19,6 +19,8 @@ var ShowAllCathegories = (function () {
     function ShowAllCathegories(_http, fb) {
         this._http = _http;
         this.fb = fb;
+        this.contact = false;
+        this.adminMode = false;
         this.showForm = false;
         this.questionSubmitted = false;
         this.hideNewQuestionButton = true;
@@ -30,6 +32,8 @@ var ShowAllCathegories = (function () {
     }
     ShowAllCathegories.prototype.getAllCathegories = function () {
         var _this = this;
+        this.contact = false;
+        this.adminMode = false;
         this.questionSubmitted = false;
         this.showForm = false;
         this.laster = "Vennligst vent";
@@ -53,6 +57,8 @@ var ShowAllCathegories = (function () {
     };
     ShowAllCathegories.prototype.getQuestions = function (id) {
         var _this = this;
+        this.contact = false;
+        this.adminMode = false;
         this.questionSubmitted = false;
         this.showForm = false;
         this.laster = "Vennligst vent";
@@ -75,6 +81,8 @@ var ShowAllCathegories = (function () {
         }, function (error) { return alert(error); }, function () { return console.log("ferdig get-api/question"); });
     };
     ShowAllCathegories.prototype.getAnswer = function (id, text) {
+        this.contact = false;
+        this.adminMode = false;
         this.hideNewQuestionButton = false;
         this.questionSubmitted = false;
         var divId = "answer" + id;
@@ -85,6 +93,8 @@ var ShowAllCathegories = (function () {
             document.getElementById(divId).innerHTML = "";
     };
     ShowAllCathegories.prototype.showNewQuestionForm = function () {
+        this.contact = false;
+        this.adminMode = false;
         this.questionSubmitted = false;
         this.showForm = true;
         this.hideNewQuestionButton = true;
@@ -118,6 +128,41 @@ var ShowAllCathegories = (function () {
             newQuestion: "",
             email: ""
         });
+    };
+    ShowAllCathegories.prototype.showSentQuestions = function () {
+        var _this = this;
+        this.contact = false;
+        this.questionSubmitted = false;
+        this.showForm = false;
+        this.hideNewQuestionButton = true;
+        this.adminMode = true;
+        this._http.get("api/question/")
+            .map(function (resultat) {
+            var JsonData = resultat.json();
+            return JsonData;
+        })
+            .subscribe(function (JsonData) {
+            _this.newQuestions = [];
+            _this.laster = "";
+            if (JsonData) {
+                for (var _i = 0, JsonData_3 = JsonData; _i < JsonData_3.length; _i++) {
+                    var q = JsonData_3[_i];
+                    _this.newQuestions.push(q);
+                }
+                ;
+            }
+            ;
+        }, function (error) { return alert(error); }, function () { return console.log("ferdig get-api/question"); });
+    };
+    ShowAllCathegories.prototype.contactInfo = function () {
+        this.questionSubmitted = false;
+        this.showForm = false;
+        this.hideNewQuestionButton = true;
+        this.adminMode = false;
+        this.contact = true;
+    };
+    ShowAllCathegories.prototype.backToMain = function () {
+        window.location.href = "http://bookingsystem2017xxx.azurewebsites.net/";
     };
     return ShowAllCathegories;
 }());
