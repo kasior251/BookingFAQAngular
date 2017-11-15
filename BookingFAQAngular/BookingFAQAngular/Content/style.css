@@ -1,39 +1,13 @@
 ﻿body {
     background: url(../background.jpg) no-repeat center fixed;
     background-size: cover;
-}
-
-h3, h4 {
-    margin-top: 50px;
-}
-
-h2 {
-    margin-top: 80px;
-}
-
-.error {
-    color: yellow;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.dropDown {
-    padding-top: 40px;
-}
-
-#drop1, #drop2 {
-    width: 150px;
-    margin: 20px;
-}
-
-#drop3 {
-    margin: 20px;
-    margin-left: 35px;
+    -webkit-transform: translateZ(0);
 }
 
 body {
     padding-top: 20px;
     padding-bottom: 20px;
+    text-align: center;
 }
 
 button {
@@ -53,40 +27,28 @@ textarea {
     max-width: 280px;
 }
 
-.price {
-    color: black;
+.answer, #showFormText {
+    color : aliceblue;
+    padding: 5px;
+    font-size: 14px;
 }
 
-#amount {
-    font-size: 16px;
+#showFormText {
+    margin: 5px;
+    margin-top: 25px;
+}
+
+h1 {
+    text-align: center;
+    padding: 10px;
+    color: azure;
+}
+
+#meny {
     margin: 10px;
+    margin-bottom: 20px;
 }
 
-#searchButton {
-    margin-left: 20px;
-}
-
-.textBox {
-    margin: 10px;
-    border-radius: 5px;
-}
-
-.cardNo {
-    margin: 2px;
-    border-radius: 5px;
-    width: 40px;
-}
-
-.dateBox {
-    margin: 2px;
-    border-radius: 5px;
-}
-
-#cvc {
-    width: 30px;
-    margin: 2px;
-    border-radius: 5px;
-}
 
 .label {
     font-size: 14px;
@@ -97,5 +59,10 @@ textarea {
 .cathegoryBtn {
     font: bold 11pd Arial;
     color: #ff0000;
-    padding: 2px, 6px, 2px, 6px;
+
+}
+
+#newQuestion {
+    width: 300px;
+    height: 150px;
 }

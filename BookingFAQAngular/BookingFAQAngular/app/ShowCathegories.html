@@ -1,21 +1,56 @@
 ﻿<div>
-    <h1>Frequently Asked Questions</h1>
-    <button (click)='getAllCathegories()'>Get Cathegories</button>
-    <button (click)='getAllCathegories()'>Contact Info</button>
-    <button (click)='getAllCathegories()'>Back</button>
+    <h1>Help and Contact Information</h1>
+    <div id="meny">
+        <button class="btn btn-primary btn-lg" style="width: 200px;" (click)='getAllCathegories()'>FAQ</button>
+        <button class="btn btn-secondary btn-lg" style="width: 200px;" (click)='getAllCathegories()'>Contact Info</button>
+        <button class="btn btn-secondary btn-lg" style="width: 200px;" (click)='getAllCathegories()'>Back</button>
+    </div>
+   
     {{laster}}
-        <div id="{{cathegory.id}}" *ngFor='let cathegory of allCathegories'>
-            <button class="cathegoryBtn"  (click)='getQuestions(cathegory.id)'>
+        <div id="{{cathegory.id}}" class="cathegory" [hidden]="showForm" *ngFor='let cathegory of allCathegories'>
+            <button class="btn btn-success btn-lg" style="width: 400px" (click)='getQuestions(cathegory.id)'>
                 {{cathegory.id}} : {{cathegory.name}}
             </button>
-            {{cathegory.id}}
         </div>
-        <div id="questions">
-            <ul>
-                <li *ngFor='let question of questions'>
-                    {{question.questionText}}
-                    {{question.answerText}}
-                </li>
-            </ul>
+        <div id="questions" [hidden]="showForm">
+            <div *ngFor='let question of questions'>
+                <button class="btn btn-primary" style="width: 400px;"id="question{{question.id}}" (click)='getAnswer(question.id, question.answerText)'>{{question.questionText}}</button>
+                <div id="answer{{question.id}}" class="answer"></div>
         </div>
+            <div [hidden]="hideNewQuestionButton" id="showFormText">
+                Didn't find answer to your question? <br />
+                <button class="btn btn-primary btn-lg" (click)='showNewQuestionForm()'>Send new question</button>
+            </div>
+        </div>
+    <div *ngIf="showForm">
+        <form [formGroup]="scheme" (ngSubmit)="submitQuestion()">
+            <div align="center" class="form-group">
+                <label>Cathegory: </label>
+                <select class="form-control" formControlName="cathegory">
+                    <option *ngFor='let cathegory of allCathegories' value ="{{cathegory.name}}"id="{{cathegory.id}}">{{cathegory.name}}</option>
+                </select>
+                <p class="alert alert-warning" [hidden]="scheme.controls.cathegory.valid || (scheme.controls.cathegory.pristine && !submitted)">
+                    Choose a cathegory
+                </p>
+            </div>
+            <div align="center" class="form-group" >
+                <label>Your question</label>
+                <textarea class="form-control" formControlName="newQuestion" id="newQuestion" rows="4" cols="50" maxlength="200" > </textarea>
+                <p class="alert alert-warning" [hidden]="scheme.controls.newQuestion.valid || (scheme.controls.newQuestion.pristine && !submitted)">
+                    The question should be minimum 10 chars and maximum 200 chars long
+                </p>
+            </div>
+            <div align="center" class="form-group">
+                <label>Your email</label>
+                <input class="form-control" formControlName="email" id="email"/>
+                <p class="alert alert-warning" [hidden]="scheme.controls.email.valid || (scheme.controls.email.pristine && !submitted)">
+                    Wrong format of email address
+                </p>
+            </div>
+        </form>
+        <button type="submit" class="btn btn-success" [disabled]="!scheme.valid" (click) ="submitQuestion()">Send question</button> 
+        <button class="btn btn-danger" (click)="clearForm()">Clear form</button>
+    </div>
+    <div *ngIf="questionSubmitted">Your question has been sent</div>
+  
 </div>

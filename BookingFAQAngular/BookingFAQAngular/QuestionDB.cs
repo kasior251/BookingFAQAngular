@@ -28,7 +28,7 @@ namespace BookingFAQAngular
             Cathegory cat = db.Cathegories.Find(id);
 
             List<Question> questions = (from q in db.Questions
-                                        where q.cathegory.id == id
+                                        where q.cathegory.id == id && q.answerText != null
                                         select q).ToList();
             List<question> list = new List<question>();
             foreach (Question q in questions)
@@ -63,58 +63,32 @@ namespace BookingFAQAngular
             return allCathegories;
         }
         
-        /*
-        public kunde hentEnKunde(int id)
+        
+        public bool saveQuestion(question newQuestion)
         {
-            Kunde enDBKunde = db.Kunder.Find(id); 
-
-            var enKunde = new kunde()
+            var cathegoryText = newQuestion.cathegory;
+            var cat = db.Cathegories.FirstOrDefault(c => c.name == cathegoryText);
+            var questionToSave = new Question
             {
-                id = enDBKunde.id,
-                fornavn = enDBKunde.fornavn,
-                etternavn = enDBKunde.etternavn,
-                adresse = enDBKunde.adresse,
-                postnr = enDBKunde.postnr,
-                poststed = enDBKunde.poststed.poststed
-            };
-            return enKunde;
-        }
-
-        public bool lagreEnKunde(kunde innKunde)
-        {
-            var nyKunde = new Kunde
-            {
-                fornavn = innKunde.fornavn,
-                etternavn = innKunde.etternavn,
-                adresse = innKunde.adresse,
-                postnr = innKunde.postnr
+                questionText = newQuestion.questionText,
+                answerText = null,
+                cathegory = cat
             };
 
-            Poststed funnetPoststed = db.Poststeder.Find(innKunde.postnr);
-            if (funnetPoststed == null)
-            {
-                // lag poststedet
-                var nyttPoststed = new Poststed
-                {
-                    postnr = innKunde.postnr,
-                    poststed = innKunde.poststed
-                };
-                // legg det inn i den nye kunden
-                nyKunde.poststed = nyttPoststed;
-
-            }
             try
             {
                 // lagre kunden
-                db.Kunder.Add(nyKunde);
+                db.Questions.Add(questionToSave);
                 db.SaveChanges();
             }
-            catch(Exception feil)
+            catch(Exception error)
             {
                 return false;
             }
             return true;
         }
+
+        /*
         public bool endreEnKunde(int id, kunde innKunde)
         {
             // finn kunden

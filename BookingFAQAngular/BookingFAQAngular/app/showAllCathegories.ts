@@ -1,8 +1,10 @@
-﻿import {Component} from "@angular/core";
-import {Http} from "@angular/http";
+﻿import { Component, OnInit } from "@angular/core";
+import { Http, Response, Headers } from "@angular/http";
 import "rxjs/add/operator/map";
 import { Cathegory } from "./Cathegory";
 import { Question } from "./Question";
+import { FormGroup, FormControl, Validators, FormBuilder } from "@angular/forms"
+
 
 @Component({
     selector: "min-app",
@@ -12,10 +14,26 @@ export class ShowAllCathegories {
     public allCathegories: Array<Cathegory>;
     public laster: string;
     public questions: Array<Question>;
+    public answer: string;
+    public showForm: boolean;
+    public scheme: FormGroup;
+    public questionSubmitted: boolean;
+    public hideNewQuestionButton: boolean;
 
-    constructor(private _http: Http) { }
+    constructor(private _http: Http, private fb: FormBuilder) {
+        this.showForm = false;
+        this.questionSubmitted = false;
+        this.hideNewQuestionButton = true;
+        this.scheme = fb.group({
+            cathegory: [null, Validators.compose([Validators.required, null])],
+            newQuestion: [null, Validators.compose([Validators.required, Validators.pattern("[a-zA-ZåøæÅØÆ0-9\\-.,?! ]{10,200}")])],
+            email: [null, Validators.compose([Validators.required, Validators.pattern("[a-z0-9\._%+-]+\@[a-z0-9\.-]+\.[a-z]{2,4}")])]
+        });
+    }
 
     getAllCathegories() {
+        this.questionSubmitted = false;
+        this.showForm = false;
         this.laster = "Vennligst vent";
         this._http.get("api/cathegory/")
             .map(resultat => {
@@ -38,10 +56,13 @@ export class ShowAllCathegories {
             },
             error => alert(error),
             () => console.log("ferdig get-api/cathegory")
-            );
+        );
+       
     }
 
-    getQuestions(id : number) {
+    getQuestions(id: number) {
+        this.questionSubmitted = false;
+        this.showForm = false;
         this.laster = "Vennligst vent";
         this._http.get("api/question/" + id  )
             .map(resultat => {
@@ -54,13 +75,7 @@ export class ShowAllCathegories {
                 this.laster = "";
                 if (JsonData) {
                     for (let question of JsonData) {
-                        this.questions.push(
-                            new Question(
-                                question.id,
-                                question.questionText,
-                                question.answerText,
-                                question.cathegory
-                            ));
+                        this.questions.push(question);
                     };
                 };
             },
@@ -69,6 +84,60 @@ export class ShowAllCathegories {
             );
     }
 
+    getAnswer(id: number, text: string) {
+        this.hideNewQuestionButton = false;
+        this.questionSubmitted = false;
+        var divId = "answer" + id;
+        if (document.getElementById(divId).innerHTML == "") {
+            document.getElementById(divId).innerHTML = text;
+        }
+        else
+            document.getElementById(divId).innerHTML = "";
+        
+    }
+
+    showNewQuestionForm() {
+        this.questionSubmitted = false;
+        this.showForm = true;
+        this.hideNewQuestionButton = true;
+        this.scheme.setValue({
+            cathegory: "",
+            newQuestion: "",
+            email: ""
+        });
+    }
+
+    submitQuestion() {
+        this.saveQuestion();
+    }
+
+    saveQuestion() {
+        var newQuestion = new Question();
+        newQuestion.questionText = this.scheme.value.newQuestion;
+        newQuestion.cathegory = this.scheme.value.cathegory;
+
+        var body: string = JSON.stringify(newQuestion);
+        var headers = new Headers({ "Content-Type": "application/json" });
+
+        this._http.post("api/question", body, { headers: headers })
+            .map(returnData => returnData.toString())
+            .subscribe(
+            returned => {
+                this.showForm = false; 
+                this.questionSubmitted = true;
+            },
+            error => alert(error),
+            () => console.log("Done post-api/question")
+            );
+    };
+
+    clearForm() {
+        this.scheme.setValue({
+            cathegory: "",
+            newQuestion: "",
+            email: ""
+        });
+    }
 
 }
 

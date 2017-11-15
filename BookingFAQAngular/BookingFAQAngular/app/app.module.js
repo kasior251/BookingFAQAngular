@@ -10,6 +10,7 @@ var core_1 = require("@angular/core");
 var platform_browser_1 = require("@angular/platform-browser");
 var http_1 = require("@angular/http");
 var showAllCathegories_1 = require("./showAllCathegories");
+var forms_1 = require("@angular/forms");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -17,7 +18,7 @@ var AppModule = (function () {
 }());
 AppModule = __decorate([
     core_1.NgModule({
-        imports: [platform_browser_1.BrowserModule, http_1.HttpModule, http_1.JsonpModule],
+        imports: [platform_browser_1.BrowserModule, forms_1.ReactiveFormsModule, http_1.HttpModule, http_1.JsonpModule],
         declarations: [showAllCathegories_1.ShowAllCathegories],
         bootstrap: [showAllCathegories_1.ShowAllCathegories]
     })

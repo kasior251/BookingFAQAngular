@@ -21,7 +21,7 @@ namespace BookingFAQAngular
         public HttpResponseMessage Get(int id)
         {
             List<question> allQuestions = questionDb.getQuestionsByCathegory(id);
-            
+
             var Json = new JavaScriptSerializer();
             string JsonString = Json.Serialize(allQuestions);
 
@@ -31,94 +31,29 @@ namespace BookingFAQAngular
                 StatusCode = HttpStatusCode.OK
             };
 
-            /* alternativ til return-koden over - for å forklare dette bedre :
-            
-            var respons = new HttpResponseMessage();
-            respons.Content = new StringContent(JsonString, Encoding.UTF8, "application/json");
-            respons.StatusCode = HttpStatusCode.OK;
-            return respons;
-            
-             */
-
         }
 
-        // GET api/Kunde/5
-        /*
-        public HttpResponseMessage Get(int id)
+
+
+        // POST api/Question
+        [HttpPost]
+        public HttpResponseMessage Post([FromBody]question newQuestion)
         {
-            kunde enKunde = kundeDb.hentEnKunde(id);
-
-            var Json = new JavaScriptSerializer();
-            string JsonString = Json.Serialize(enKunde);
-
-            return new HttpResponseMessage()
-            {
-                Content = new StringContent(JsonString, Encoding.UTF8, "application/json"),
-                StatusCode = HttpStatusCode.OK
-            };
-        }
-
-        // POST api/Kunde
-        public HttpResponseMessage Post(kunde innKunde)
-        {
-            if(ModelState.IsValid)
-            {
-                bool OK = kundeDb.lagreEnKunde(innKunde);
-                if (OK)
-                {
-                    return new HttpResponseMessage()
-                    {
-                        StatusCode = HttpStatusCode.OK
-                    };
-                    
-                }
-            }
-            return new HttpResponseMessage()
-            {
-                StatusCode = HttpStatusCode.NotFound,
-                Content = new StringContent("Kunne ikke sette inn kunden i DB")
-            };
-        }
-
-        
-        // PUT api/Kunde/5
-        public HttpResponseMessage Put(int id, [FromBody]kunde innKunde)
-        {
-            if(ModelState.IsValid)
-            {
-                bool OK = kundeDb.endreEnKunde(id, innKunde);
-                if (OK)
-                {
-                    return new HttpResponseMessage()
-                    {
-                        StatusCode = HttpStatusCode.OK
-                    };
-                }
-            }
-            return new HttpResponseMessage()
-            {
-                StatusCode = HttpStatusCode.NotFound,
-                Content = new StringContent("Kunne ikke endre kunden i DB")
-            };
-            
-        }
-
-        // DELETE api/Kunde/5
-        public HttpResponseMessage Delete(int id)
-        {
-            bool OK = kundeDb.slettEnKunde(id);
-            if (!OK)
+            bool OK = questionDb.saveQuestion(newQuestion);
+            if (OK)
             {
                 return new HttpResponseMessage()
                 {
-                    StatusCode = HttpStatusCode.NotFound,
-                    Content = new StringContent("Kunne ikke slette kunden i DB")
+                    StatusCode = HttpStatusCode.OK
                 };
+
             }
+
             return new HttpResponseMessage()
             {
-                StatusCode = HttpStatusCode.OK
+                StatusCode = HttpStatusCode.NotFound,
+                Content = new StringContent("Could not save the question in DB")
             };
-        }*/
+        }
     }
 }
