@@ -41,7 +41,7 @@ export class ShowAllCathegories {
         this.adminMode = false;
         this.questionSubmitted = false;
         this.showForm = false;
-        this.laster = "Vennligst vent";
+        this.laster = "Please wait";
         this._http.get("api/cathegory/")
             .map(resultat => {
                 let JsonData = resultat.json();
@@ -158,6 +158,7 @@ export class ShowAllCathegories {
         this.showForm = false;
         this.hideNewQuestionButton = true;
         this.adminMode = true;
+        this.laster = "Please wait";
         this._http.get("api/question/")
             .map(resultat => {
                 let JsonData = resultat.json();
@@ -188,7 +189,7 @@ export class ShowAllCathegories {
     }
 
     backToMain() {
-        window.location.href = "http://bookingsystem2017xxx.azurewebsites.net/";
+        window.location.href = "http://bookingsystem2017xx.azurewebsites.net/";
     }
 
 }
